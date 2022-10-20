@@ -1,5 +1,10 @@
 # 711-project2
 
+## Download papers
+```
+cd papers/
+wget -i your_portion.txt -P your_papers/
+```
 
 ## Setup Environment
 ```
