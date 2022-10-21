@@ -25,3 +25,7 @@ Save your paper pdfs under a directory `papers/`, and save output json file in `
 ```
 python prepare_text.py -d papers -o prepared.json
 ```
+
+## Annotate Data Using Label Studio
+
+See https://github.com/neubig/nlp-from-scratch-assignment-2022/blob/main/annotation_interface.md
