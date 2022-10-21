@@ -30,7 +30,7 @@ if __name__ == '__main__':
             curr_page = pdf_pages[i]
             curr_text = curr_page.extract_text()
             tokenized_page = [nlp(line) for line in ' '.join(curr_text.encode("ascii", "ignore").decode().replace('\x03','').split('\n')).split('. ')]
-            pdf_page_sentence = [{'text':(' '.join([w.text for w in line])).replace(' - ','[SSUUBB]').replace('- ','').replace('[SSUUBB]',' - ').replace(' %','%')+' . ','paperid':pdf_name} for line in tokenized_page]
+            pdf_page_sentence = [{'text':(' '.join([w.text for w in line])).replace(' - ','[SSUUBB]').replace('- ','').replace('[SSUUBB]',' - ').replace(' %','%').replace(' ne - ', ' fine - ')+' . ','paperid':pdf_name} for line in tokenized_page]
             all_sentence += pdf_page_sentence
             page_indicator += 1
     
