@@ -29,8 +29,8 @@ if __name__ == '__main__':
         for i in tqdm(range(n_pages), desc="[%s]"%(pdf_name)):
             curr_page = pdf_pages[i]
             curr_text = curr_page.extract_text()
-            tokenized_page = [nlp(line) for line in ' '.join(curr_text.encode("ascii", "ignore").decode().split('\n')).replace('et al.', 'et al').split('. ')]
-            pdf_page_sentence = [{'text':(' '.join([w.text for w in line])).replace(' - ','[SSUUBB]').replace('- ','').replace('[SSUUBB]',' - ').replace(' %','%').replace(' ne ', ' fine ').replace(' nd', ' find').replace('et al','et al .')+' . ','paperid':pdf_name} for line in tokenized_page]
+            tokenized_page = [nlp(line) for line in ' '.join(curr_text.replace('ﬁ','fi').encode("ascii", "ignore").decode().split('\n')).replace('et al.', 'et al').split('. ')]
+            pdf_page_sentence = [{'text':(' '.join([w.text for w in line])).replace(' - ','[SSUUBB]').replace('- ','').replace('[SSUUBB]',' - ').replace(' %','%').replace('et al','et al .')+' . ','paperid':pdf_name} for line in tokenized_page]
             all_sentence += pdf_page_sentence
             page_indicator += 1
     
