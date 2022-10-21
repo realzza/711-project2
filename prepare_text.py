@@ -21,7 +21,7 @@ if __name__ == '__main__':
     all_sentence = []
     nlp = spacy.load("en_core_web_sm")
     for pdf in all_pdfs:
-        pdf_name = pdf.split('/')[-1].split('.')[0]
+        pdf_name = '-'.join(pdf.split('/')[-1].split('.')[:-1])
         pdf_reader = PdfReader(pdf)
         n_pages = len(pdf_reader.pages)
         pdf_pages = pdf_reader.pages
