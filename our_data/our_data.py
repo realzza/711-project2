@@ -53,12 +53,11 @@ class OurData(datasets.GeneratorBasedBuilder):
         )
 
     def _split_generators(self, dl_manager):
-        url = "https://github.com/realzza/711-project2/raw/main/our_data"
+        url = "https://github.com/realzza/711-project2/raw/main/our_data/mixed"
         data_files = {
-            # FIXME: data splits
-            "train": os.path.join(url, "tjy-raw.conll"),
-            "dev": os.path.join(url, "tjy-raw.conll"),
-            "test": os.path.join(url, "tjy-raw.conll"),
+            "train": os.path.join(url, "train.conll"),
+            "dev": os.path.join(url, "dev.conll"),
+            "test": os.path.join(url, "test.conll"),
         }
 
         return [
