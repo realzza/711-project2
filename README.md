@@ -43,5 +43,13 @@ Otherwise, use `clean_conll.py` to remove the middle two columns.
 ## Finetune SciBERT on Annotated Data
 
 ```bash
-python ner/finetune.sh
+cd ner
+python finetune.sh
+```
+
+## Run prediction on SciNER
+
+```bash
+cd ner
+python test_sciner.sh
 ```
