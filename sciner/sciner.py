@@ -2,11 +2,9 @@
 Custom Huggingface-compatible NER dataset
 """
 
-from datasets import load_metric
 import datasets
 import os
 
-metric = load_metric("seqeval")
 logger = datasets.logging.get_logger(__name__)
 
 
@@ -17,7 +15,7 @@ class OurDataConfig(datasets.BuilderConfig):
 
 class OurData(datasets.GeneratorBasedBuilder):
     BUILDER_CONFIGS = [
-        OurDataConfig(name="OurData", version=datasets.Version("1.0.0"), description="Our NLP NER dataset"),
+        OurDataConfig(name="SciNER", version=datasets.Version("1.0.0"), description="Private SciNER test data"),
     ]
 
     def _info(self):
@@ -55,9 +53,9 @@ class OurData(datasets.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager):
         url = "https://github.com/realzza/711-project2/raw/main/sciner"
         data_files = {
-            "train": os.path.join(url, "anlp-sciner-test-empty.conll"),
-            "dev": os.path.join(url, "anlp-sciner-test-empty.conll"),
-            "test": os.path.join(url, "anlp-sciner-test-empty.conll"),
+            "train": os.path.join(url, "anlp-sciner-test-sentences.txt"),
+            "dev": os.path.join(url, "anlp-sciner-test-sentences.txt"),
+            "test": os.path.join(url, "anlp-sciner-test-sentences.txt"),
         }
 
         return [
@@ -69,26 +67,12 @@ class OurData(datasets.GeneratorBasedBuilder):
     def _generate_examples(self, filepath):
         logger.info("⏳ Generating examples from = %s", filepath)
         with open(filepath, encoding="utf-8") as f:
-            guid = 0
-            tokens = []
-            ner_tags = []
+            guid = -1
             for line in f:
-                if line.startswith("-DOCSTART-") or line == "" or line == "\n":
-                    if tokens:
-                        yield guid, {
-                            "id": str(guid),
-                            "tokens": tokens,
-                            "ner_tags": ner_tags,
-                        }
-                        guid += 1
-                        tokens = []
-                        ner_tags = []
-                else:
-                    splits = line.split()
-                    tokens.append(splits[0])
-                    ner_tags.append(splits[1].rstrip())
-            # last example
-            if tokens:
+                tokens = line.rstrip('\n').split()
+                ner_tags = ['O' for _ in tokens]
+
+                guid += 1
                 yield guid, {
                     "id": str(guid),
                     "tokens": tokens,
