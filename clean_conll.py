@@ -22,7 +22,8 @@ def main():
                 if len(tokens) == 0:
                     outf.write(f'\n')
             else:
-                col1, _, _, col2 = tokens
+                col1 = tokens[0]
+                col2 = tokens[3]
                 outf.write(f'{col1} {col2}\n')
 
 
