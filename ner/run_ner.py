@@ -107,7 +107,7 @@ class DataTrainingArguments:
         metadata={"help": "The number of processes to use for the preprocessing."},
     )
     max_seq_length: int = field(
-        default=None,
+        default=512,
         metadata={
             "help": (
                 "The maximum total input sequence length after tokenization. If set, sequences longer "
@@ -389,14 +389,11 @@ def main():
             b_to_i_label.append(idx)
 
     # Preprocessing the dataset
-    # Padding strategy
-    padding = "max_length" if data_args.pad_to_max_length else False
-
     # Tokenize all texts and align the labels with them.
     def tokenize_and_align_labels(examples):
         tokenized_inputs = tokenizer(
             examples[text_column_name],
-            padding=padding,
+            padding=False,
             truncation=True,
             max_length=data_args.max_seq_length,
             # We use this argument because the texts in our dataset are lists of words (with a label for each word).
@@ -574,12 +571,17 @@ def main():
         trainer.log_metrics("predict", metrics)
         trainer.save_metrics("predict", metrics)
 
-        # Save predictions
-        output_predictions_file = os.path.join(training_args.output_dir, "predictions.txt")
+        # Save predictions as a .conll file
         if trainer.is_world_process_zero():
-            with open(output_predictions_file, "w") as writer:
-                for prediction in true_predictions:
-                    writer.write(" ".join(prediction) + "\n")
+            with open(os.path.join(training_args.output_dir, "predictions.conll"), "w") as writer:
+                for i, sentence in enumerate(predict_dataset):
+                    for j, word in enumerate(sentence['tokens']):
+                        if j >= len(true_predictions[i]):  # FIXME: sequence too long, being truncated by the tokenizer
+                            writer.write(f'{word} O\n')
+                        else:
+                            writer.write(f'{word} {true_predictions[i][j]}\n')
+
+                    writer.write('\n')
 
     kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "token-classification"}
     if data_args.dataset_name is not None:

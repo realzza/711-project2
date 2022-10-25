@@ -55,6 +55,8 @@ class OurData(datasets.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager):
         url = "https://github.com/realzza/711-project2/raw/main/sciner"
         data_files = {
+            "train": os.path.join(url, "anlp-sciner-test-empty.conll"),
+            "dev": os.path.join(url, "anlp-sciner-test-empty.conll"),
             "test": os.path.join(url, "anlp-sciner-test-empty.conll"),
         }
 
@@ -82,10 +84,9 @@ class OurData(datasets.GeneratorBasedBuilder):
                         tokens = []
                         ner_tags = []
                 else:
-                    # conll2003 tokens are space separated
-                    splits = line.split(" ")
+                    splits = line.split()
                     tokens.append(splits[0])
-                    ner_tags.append(splits[3].rstrip())
+                    ner_tags.append(splits[1].rstrip())
             # last example
             if tokens:
                 yield guid, {
