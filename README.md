@@ -43,13 +43,37 @@ Otherwise, use `clean_conll.py` to remove the middle two columns.
 ## Finetune SciBERT on Annotated Data
 
 ```bash
-cd ner
+# in ner/
 python finetune.sh
 ```
 
 ## Run prediction on SciNER
 
 ```bash
-cd ner
+# in ner/
 python test_sciner.sh
+```
+
+## Submit to Explainaboard
+
+```bash
+# in ner/
+pred_file=test_sciner/predictions.conll
+submit_file=submission/submission.conll
+
+# Convert sentence submission to paragraphs:
+python ../sentence2paragraph.py -i $pred_file -d ../sciner/anlp-sciner-test-empty.conll -o $submit_file || exit 1
+
+python -m explainaboard_client.cli.evaluate_system \
+  --username $EB_USERNAME \
+  --api-key $EB_API_KEY \
+  --task named-entity-recognition \
+  --system-name anlp_andrewid_scibert \
+  --dataset cmu_anlp \
+  --sub-dataset sciner \
+  --split test \
+  --system-output-file "$submit_file" \
+  --system-output-file-type conll \
+  --shared-users neubig@gmail.com \
+  --source-language en
 ```
