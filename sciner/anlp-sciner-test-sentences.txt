@@ -1711,7 +1711,8 @@ This concatenated string is encoded using BERT 3 to obtain , h m , e a represent
 Given a candidate list E of size K generated in the previous stage , K scores are generated for each mention , which are subsequently scored using a dot - product with a learned weight vector ( w ) .
 Thus ,
 h m , e = BERT([CLS ] c l m c r [ SEP ] e [ SEP ] ) , score m , e = w T h m , e .
-The candidate with the highest score is chosen as the correct entity , i.e. Linking to Unseen Knowledge Bases
+The candidate with the highest score is chosen as the correct entity , i.e.
+Linking to Unseen Knowledge Bases
 The models in Section 3 were designed to operate in settings where the entities in the target KB were only represented using a textual description .
 For example , the entity Douglas Adams would be represented in such a database using a description as follows : " Douglas Adams was an English author , screenwriter , essayist , humorist , satirist and dramatist .
 He was the author of The Hitchhiker 's Guide to the Galaxy . "
@@ -1722,7 +1723,8 @@ This raises the question of whether such models , that harness the power of pre 
 This section presents multiple ideas to this end .
 Representing Arbitrary Entities using
 Attribute Separators
-One way of using these models for linking against arbitrary KBs is by defining an attribute - to - text function f , that maps arbitrary entities with any set of attributes { k i , v i } n i=1 to a string representation e that can be consumed by BERT , i.e. e = f ( { k i , v i } n i=1 ) .
+One way of using these models for linking against arbitrary KBs is by defining an attribute - to - text function f , that maps arbitrary entities with any set of attributes { k i , v i } n i=1 to a string representation e that can be consumed by BERT , i.e.
+e = f ( { k i , v i } n i=1 ) .
 If all entities in the KB are represented using such string representations , then the models described in Section 3 can directly be used for arbitrary schemas .
 This leads to the question : how can we generate string representations for entities from arbitrary KBs such that they can be used for BERT - based models ?
 Alternatively , what form can f take ?
