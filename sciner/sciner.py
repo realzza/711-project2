@@ -68,9 +68,12 @@ class OurData(datasets.GeneratorBasedBuilder):
         logger.info("⏳ Generating examples from = %s", filepath)
         with open(filepath, encoding="utf-8") as f:
             guid = -1
-            for line in f:
+            for i, line in enumerate(f):
                 tokens = line.rstrip('\n').split()
                 ner_tags = ['O' for _ in tokens]
+
+                if len(tokens) > 512:
+                    logger.warning(f"Sequence length at {filepath}:{i + 1} is larger than 512")
 
                 guid += 1
                 yield guid, {
